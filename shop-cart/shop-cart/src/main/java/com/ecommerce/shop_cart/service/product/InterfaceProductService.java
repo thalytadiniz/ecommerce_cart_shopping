@@ -14,6 +14,6 @@ public interface InterfaceProductService {
     List<Product> getProductsByBrand(String brand);
     List<Product> getProductsByCategoryAndBrand(String category, String brand);
     List<Product> getProductsByName(String name);
-    List<Product> getProductsByBrandAndName(String category, String name);
+    List<Product> getProductsByBrandAndName(String brand, String name);
     Long countProductsByBrandAndName(String category, String name);
 }
