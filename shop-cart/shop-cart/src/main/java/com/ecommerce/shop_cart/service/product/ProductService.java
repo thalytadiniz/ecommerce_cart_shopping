@@ -1,6 +1,8 @@
 package com.ecommerce.shop_cart.service.product;
 
+import com.ecommerce.shop_cart.request.AddProductRequest;
 import com.ecommerce.shop_cart.exceptions.ProductNotFoundException;
+import com.ecommerce.shop_cart.model.Category;
 import com.ecommerce.shop_cart.model.Product;
 import com.ecommerce.shop_cart.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +17,20 @@ public class ProductService implements InterfaceProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Product addProduct(Product product) {
+    public Product addProduct(AddProductRequest product) {
+        
         return null;
+    }
+
+    private Product createProduct(AddProductRequest request, Category category) {
+        return new Product(
+                request.getName(),
+                request.getBrand(),
+                request.getPrice(),
+                request.getInventory(),
+                request.getDescription(),
+                category
+        );
     }
 
     @Override

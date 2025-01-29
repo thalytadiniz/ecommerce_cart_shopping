@@ -1,9 +1,11 @@
 package com.ecommerce.shop_cart.service.product;
 
+import com.ecommerce.shop_cart.request.AddProductRequest;
+
 import java.util.List;
 
 public interface InterfaceProductService {
-    Product addProduct(Product product);
+    Product addProduct(AddProductRequest product);
 
     Product getProductById(Long id);
     void deleteProductById(Long id);
