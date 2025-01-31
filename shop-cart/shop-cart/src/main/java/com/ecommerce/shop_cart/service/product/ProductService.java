@@ -55,8 +55,11 @@ public class ProductService implements InterfaceProductService {
     }
 
     @Override
-    public void updateProductById(Product product, ProductUpdateRequest request) {
-
+    public Product updateProductById(ProductUpdateRequest request, Long productId) {
+        return productRepository.findById(productId)
+                .map(existingProduct -> updateExistingProduct(existingProduct,request))
+                .map(productRepository :: save)
+                .orElseThrow(()-> new ProductNotFoundException("Product not found!"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
