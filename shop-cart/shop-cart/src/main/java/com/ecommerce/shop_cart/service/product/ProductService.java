@@ -80,7 +80,7 @@ public class ProductService implements InterfaceProductService {
     }
 
     @Override
-    public List<Product> getProductsByCategory(Long category) {
+    public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategoryName(category);
     }
 
