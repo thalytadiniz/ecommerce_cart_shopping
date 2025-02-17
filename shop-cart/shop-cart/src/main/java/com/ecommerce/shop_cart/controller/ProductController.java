@@ -5,6 +5,7 @@ import com.ecommerce.shop_cart.dto.ProductDto;
 import com.ecommerce.shop_cart.exceptions.ResourceNotFoundException;
 import com.ecommerce.shop_cart.model.Product;
 import com.ecommerce.shop_cart.request.AddProductRequest;
+import com.ecommerce.shop_cart.request.ProductUpdateRequest;
 import com.ecommerce.shop_cart.response.ApiResponse;
 import com.ecommerce.shop_cart.service.product.InterfaceProductService;
 import lombok.RequiredArgsConstructor;
@@ -48,4 +49,23 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/product/{productId}/update")
+    public  ResponseEntity<ApiResponse> updateProduct(@RequestBody ProductUpdateRequest request, @PathVariable Long productId) {
+        try {
+            Product theProduct = productService.updateProductById(request, productId);
+            return ResponseEntity.ok(new ApiResponse("Update product success!", productId));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @DeleteMapping("/product/{productId}/delete")
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId) {
+        try {
+            productService.deleteProductById(productId);
+            return ResponseEntity.ok(new ApiResponse("Delete product success!", productId));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 }
