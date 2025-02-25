@@ -13,14 +13,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CategoryService implements InterfaceCategoryService {
-
     private final CategoryRepository categoryRepository;
 
     @Override
     public Category getCategoryById(Long id) {
-
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
     }
 
     @Override
@@ -48,10 +46,13 @@ public class CategoryService implements InterfaceCategoryService {
         }) .orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
     }
 
+
     @Override
     public void deleteCategoryById(Long id) {
-        categoryRepository.findById(id).ifPresentOrElse(categoryRepository::delete, () -> {
-            throw new ResourceNotFoundException("Category not found.");
-        });
+        categoryRepository.findById(id)
+                .ifPresentOrElse(categoryRepository::delete, () -> {
+                    throw new ResourceNotFoundException("Category not found!");
+                });
+
     }
 }

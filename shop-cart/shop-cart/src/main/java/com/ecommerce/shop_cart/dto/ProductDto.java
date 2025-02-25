@@ -1,6 +1,11 @@
 package com.ecommerce.shop_cart.dto;
 
 import com.ecommerce.shop_cart.model.Category;
+import com.ecommerce.shop_cart.model.Image;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 import java.math.BigDecimal;

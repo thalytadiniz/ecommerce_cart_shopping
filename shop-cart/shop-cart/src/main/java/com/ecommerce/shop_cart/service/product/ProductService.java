@@ -1,6 +1,9 @@
 package com.ecommerce.shop_cart.service.product;
 
+import com.ecommerce.shop_cart.dto.ProductDto;
+import com.ecommerce.shop_cart.exceptions.ResourceNotFoundException;
 import com.ecommerce.shop_cart.repository.CategoryRepository;
+import com.ecommerce.shop_cart.repository.ImageRepository;
 import com.ecommerce.shop_cart.request.AddProductRequest;
 import com.ecommerce.shop_cart.exceptions.ProductNotFoundException;
 import com.ecommerce.shop_cart.model.Category;
@@ -16,12 +19,16 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProductService implements InterfaceProductService {
-
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
 
     @Override
     public Product addProduct(AddProductRequest request) {
+        // check if the category is found in the DB
+        // If Yes, set it as the new product category
+        // If No, the save it as a new category
+        // The set as the new product category.
 
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
@@ -31,7 +38,6 @@ public class ProductService implements InterfaceProductService {
         request.setCategory(category);
         return productRepository.save(createProduct(request, category));
     }
-
 
     private Product createProduct(AddProductRequest request, Category category) {
         return new Product(
@@ -44,22 +50,26 @@ public class ProductService implements InterfaceProductService {
         );
     }
 
+
     @Override
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product not found."));
+        return productRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 
     @Override
     public void deleteProductById(Long id) {
-        productRepository.findById(id).ifPresentOrElse(productRepository::delete, () -> {throw new ProductNotFoundException("Product not found.");});
+        productRepository.findById(id)
+                .ifPresentOrElse(productRepository::delete,
+                        () -> {throw new ResourceNotFoundException("Product not found!");});
     }
 
     @Override
-    public Product updateProductById(ProductUpdateRequest request, Long productId) {
+    public Product updateProduct(ProductUpdateRequest request, Long productId) {
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct,request))
                 .map(productRepository :: save)
-                .orElseThrow(()-> new ProductNotFoundException("Product not found!"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
@@ -72,6 +82,7 @@ public class ProductService implements InterfaceProductService {
         Category category = categoryRepository.findByName(request.getCategory().getName());
         existingProduct.setCategory(category);
         return  existingProduct;
+
     }
 
     @Override
@@ -104,7 +115,9 @@ public class ProductService implements InterfaceProductService {
         return productRepository.findByBrandAndName(brand, name);
     }
 
+    @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
     }
+
 }

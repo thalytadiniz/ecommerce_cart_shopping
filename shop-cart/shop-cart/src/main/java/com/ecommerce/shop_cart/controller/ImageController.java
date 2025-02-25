@@ -4,12 +4,12 @@ import com.ecommerce.shop_cart.dto.ImageDto;
 import com.ecommerce.shop_cart.exceptions.ResourceNotFoundException;
 import com.ecommerce.shop_cart.model.Image;
 import com.ecommerce.shop_cart.response.ApiResponse;
-import com.ecommerce.shop_cart.service.image.ImageService;
 import com.ecommerce.shop_cart.service.image.InterfaceImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,6 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/images")
-
 public class ImageController {
     private final InterfaceImageService imageService;
 
